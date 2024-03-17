@@ -6,7 +6,8 @@ COPY src src
 
 RUN mvn clean package -DskipTests
 
-FROM openjdk:11-ea-17-jre-slim
+FROM openjdk:17-jdk
+
 WORKDIR /app
 
 COPY --from=build /app/target/*.jar app.jar
