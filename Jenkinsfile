@@ -31,21 +31,6 @@ pipeline {
             }
         }
 
-        stage('Docker Login') {
-            steps {
-                script {
-                    withCredentials([
-                        string(credentialsId: 'docker-hub-username', variable: 'DOCKER_USERNAME'),
-                        string(credentialsId: 'docker-hub-password', variable: 'DOCKER_PASSWORD')
-                    ]) {
-                        powershell """
-                        echo \$env:DOCKER_PASSWORD | docker login --username \$env:DOCKER_USERNAME --password-stdin
-                        """.trim()
-                    }
-                }
-            }
-        }
-
         stage('Docker Push') {
             steps {
                 powershell "docker push ${DOCKER_IMAGE}"
