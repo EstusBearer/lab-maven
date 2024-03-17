@@ -31,21 +31,22 @@ pipeline {
             }
         }
 
-stage('Docker Login') {
-    steps {
-        script {
-            withCredentials([usernamePassword(credentialsId: DOCKER_CREDENTIALS_ID, passwordVariable: 'DOCKERHUB_PASSWORD', usernameVariable: 'DOCKERHUB_USERNAME')]) {
-                // Use withEnv to securely set and pass the environment variables
-                withEnv(["DOCKER_USERNAME=${DOCKERHUB_USERNAME}", "DOCKER_PASSWORD=${DOCKERHUB_PASSWORD}"]) {
-                    // Now using withEnv to handle the Docker login securely
-                    powershell 'echo $env:DOCKER_PASSWORD | docker login --username $env:DOCKER_USERNAME --password-stdin'
+
+
+        stage('Docker Login') {
+            steps {
+                script {
+                    withCredentials([
+                        string(credentialsId: 'docker-hub-username', variable: 'DOCKER_USERNAME'),
+                        string(credentialsId: 'docker-hub-password', variable: 'DOCKER_PASSWORD')
+                    ]) {
+                        withEnv(["DOCKER_USERNAME=${DOCKER_USERNAME}", "DOCKER_PASSWORD=${DOCKER_PASSWORD}"]) {
+                            powershell 'echo $env:DOCKER_PASSWORD | docker login --username $env:DOCKER_USERNAME --password-stdin'
+                        }
+                    }
                 }
             }
         }
-    }
-}
-
-
 
         stage('Docker Push') {
             steps {
