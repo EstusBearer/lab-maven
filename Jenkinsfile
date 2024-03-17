@@ -27,7 +27,6 @@ pipeline {
         stage('Docker Build') {
             steps {
                 script {
-                    // Building Docker image with tag
                     docker.build("${DOCKER_IMAGE}")
                 }
             }
@@ -36,9 +35,7 @@ pipeline {
         stage('Docker Push') {
             steps {
                 script {
-                    // Using Docker withRegistry for login and push
                     docker.withRegistry('https://registry.hub.docker.com', 'your-docker-credentials-id') {
-                        // Pushing the built Docker image within the registry login context
                         docker.image("${DOCKER_IMAGE}").push()
                     }
                 }
