@@ -40,13 +40,12 @@ pipeline {
                         string(credentialsId: 'docker-hub-username', variable: 'DOCKER_USERNAME'),
                         string(credentialsId: 'docker-hub-password', variable: 'DOCKER_PASSWORD')
                     ]) {
-                        withEnv(["DOCKER_USERNAME=${DOCKER_USERNAME}", "DOCKER_PASSWORD=${DOCKER_PASSWORD}"]) {
-                            powershell 'echo $env:DOCKER_PASSWORD | docker login --username $env:DOCKER_USERNAME --password-stdin'
-                        }
+                        sh "docker login --username $DOCKER_USERNAME --password $DOCKER_PASSWORD"
                     }
                 }
             }
         }
+
 
         stage('Docker Push') {
             steps {
