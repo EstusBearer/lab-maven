@@ -31,8 +31,6 @@ pipeline {
             }
         }
 
-
-
         stage('Docker Login') {
             steps {
                 script {
@@ -40,12 +38,11 @@ pipeline {
                         string(credentialsId: 'docker-hub-username', variable: 'DOCKER_USERNAME'),
                         string(credentialsId: 'docker-hub-password', variable: 'DOCKER_PASSWORD')
                     ]) {
-                        sh "docker login --username $DOCKER_USERNAME --password $DOCKER_PASSWORD"
+                        powershell "docker login -u $env:DOCKER_USERNAME -p $env:DOCKER_PASSWORD"
                     }
                 }
             }
         }
-
 
         stage('Docker Push') {
             steps {
