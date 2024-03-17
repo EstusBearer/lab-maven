@@ -38,7 +38,9 @@ pipeline {
                         string(credentialsId: 'docker-hub-username', variable: 'DOCKER_USERNAME'),
                         string(credentialsId: 'docker-hub-password', variable: 'DOCKER_PASSWORD')
                     ]) {
-                        powershell "docker login -u $env:DOCKER_USERNAME -p $env:DOCKER_PASSWORD"
+                        powershell """
+                        \$DOCKER_PASSWORD | docker login --username \$env:DOCKER_USERNAME --password-stdin
+                        """.trim()
                     }
                 }
             }
