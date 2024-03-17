@@ -15,13 +15,13 @@ pipeline {
 
         stage('Build Maven Project') {
             steps {
-                powershell 'mvn clean package -DskipTests'
+                powershell './mvnw.cmd clean package -DskipTests'
             }
         }
 
         stage('Code Coverage') {
             steps {
-                powershell 'mvn test jacoco:report'
+                powershell './mvnw.cmd test jacoco:report'
             }
         }
 
